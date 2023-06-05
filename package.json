@@ -1,7 +1,7 @@
 {
-  "name": "@kasimirjs/embed",
+  "name": "@micx/lib-js",
 
-  "version": "1.0.22",
+  "version": "1.0.1",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.module.js",
@@ -38,7 +38,7 @@
     "ts-jest": "^29",
     "ts-loader": "^9",
     "ts-node": "^10",
-    "typescript": "^,
+    "typescript": ">=4.0",
     "webpack": "^5",
     "webpack-cli": "^5"
   }
