@@ -3,6 +3,7 @@ import {MicxFormmailHelper} from "./MicxFormmailHelper";
 import {MicxFormmailStyleInterface} from "./MicxFormmailStyleInterface";
 import {MicxFormmailDefaultBootstrapStyle} from "./MicxFormmailDefaultBootstrapStyle";
 import {MicxFormmailerApi} from "./MicxFormmailerApi";
+import {Micx} from "../Micx";
 
 
 export class MicxFormmailConfig {
@@ -15,7 +16,7 @@ export class MicxFormmailConfig {
 export class MicxFormmailFacade {
 
     constructor(
-        public formMailer: MicxFormmailerApi,
+        public formMailer: MicxFormmailerApi = Micx.formMailerApi,
         public config: MicxFormmailConfig = new MicxFormmailConfig(),
         public formatter : MicxFormmailStyleInterface = new MicxFormmailDefaultBootstrapStyle()
     ) {
