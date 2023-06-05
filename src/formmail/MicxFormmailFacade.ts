@@ -14,8 +14,6 @@ export class MicxFormmailConfig {
 
 export class MicxFormmailFacade {
 
-    config
-
     constructor(
         public formMailer: MicxFormmailerApi,
         public config: MicxFormmailConfig = new MicxFormmailConfig(),
@@ -35,7 +33,7 @@ export class MicxFormmailFacade {
 
         if (this.config.preventEnterSubmitForm) {
             htmlElement.addEventListener("submit", async (e: SubmitEvent) => {
-                let form = e.target.closest("form") as HTMLFormElement;
+                let form = (e.target as HTMLFormElement).closest("form") as HTMLFormElement;
                 if (form === null)
                     return;
                 if (!form.hasAttribute("data-micx-formmail-preset"))
@@ -46,13 +44,14 @@ export class MicxFormmailFacade {
         }
 
         htmlElement.addEventListener("click", (e) => {
-            if (e.target.closest("button") === null || e.target.closest("button").getAttribute("type") !== "submit") {
+            let target = e.target as HTMLElement;
+            if (target.closest("button") === null || target.closest("button").getAttribute("type") !== "submit") {
                 return;
             }
-            let form = (e.explicitOriginalTarget || e.target).closest("form");
+            let form = (e["explicitOriginalTarget"] || e.target).closest("form");
             if (form === null)
                 return;
-            if (e.pointerType === '' && this.config.preventEnterSubmitForm) {
+            if (e["pointerType"] === '' && this.config.preventEnterSubmitForm) {
                 return; // Triggered by Enter in Input Form
             }
             if (!form.hasAttribute("data-micx-formmail-preset"))

@@ -8,9 +8,9 @@ export class MicxFormmailHelper {
 
     public static collectFormData(form: HTMLFormElement): FormCollectedData {
         let invalidForms = [];
-        let formdata = {};
+        let formdata : any = {};
         let unnamedFieldIndex = 0;
-        for (let el of form.querySelectorAll("input,select,textarea") as HTMLInputElement[] | HTMLSelectElement[] | HTMLTextAreaElement[]) {
+        for (let el : HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement of form.querySelectorAll("input,select,textarea") as NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
             let valid = el.validity.valid;
             if (el.type.toLowerCase() === "email") {
                 el.value = el.value.trim(); // Trim EMail
@@ -34,7 +34,7 @@ export class MicxFormmailHelper {
 
             name = name.trim();
 
-            if (el.type === "checkbox" && el.checked === false)
+            if (el.type === "checkbox" && el["checked"] === false)
                 continue;
             if (name.endsWith("[]")) {
                 name = name.slice(0, -2);
