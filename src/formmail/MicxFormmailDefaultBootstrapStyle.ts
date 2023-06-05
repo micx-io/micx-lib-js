@@ -17,9 +17,11 @@ export class MicxFormmailDefaultBootstrapStyle implements MicxFormmailStyleInter
     }
 
     setFormSentError(form: HTMLFormElement): void {
+        alert("[Error] Sending email failed! See browser console for details.");
     }
 
     setFormSentOk(form: HTMLFormElement): void {
+        alert("[OK] E-Mail sent successfully!");
     }
 
     setFormValid(form: HTMLFormElement): void {
