@@ -1,0 +1,23 @@
+version: 1
+from: "ghcr.io/nfra-project/kickstart-flavor-php:unstable"
+ports: "80:80;4000:4000;4100:4100;9229:9229"
+
+# packages: []
+
+command:
+  build:
+    - sudo chmod 777 -R /var/www/html
+    - npm install
+
+
+
+  jekyll: |
+    jekyll serve -s /opt/docs -d /var/www/html --drafts --livereload --port 4000 --livereload-port 4100 --host 0.0.0.0
+
+  dev:
+    - killall jekyll ||  echo "no job"
+    - sleep 1
+
+
+  killall:
+    killall jekyll
