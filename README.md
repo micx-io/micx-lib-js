@@ -31,7 +31,7 @@ Observe all `<form data-micx-formmail-preset="preset-name">` elements:
 
 ```javascript
 var formmail = Micx.formMailApi;
-formmail.sendData({
+await formmail.sendData({
     "key": "value"
 }, "preset-name");      
 ```
