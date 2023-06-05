@@ -10,7 +10,7 @@ export class MicxFormmailHelper {
         let invalidForms = [];
         let formdata : any = {};
         let unnamedFieldIndex = 0;
-        for (let el : HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement of form.querySelectorAll("input,select,textarea") as NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
+        for (let el of form.querySelectorAll("input,select,textarea") as any) {
             let valid = el.validity.valid;
             if (el.type.toLowerCase() === "email") {
                 el.value = el.value.trim(); // Trim EMail

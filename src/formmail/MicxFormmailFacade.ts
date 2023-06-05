@@ -43,7 +43,7 @@ export class MicxFormmailFacade {
             })
         }
 
-        htmlElement.addEventListener("click", (e) => {
+        htmlElement.addEventListener("click", (e : MouseEvent | any) => {
             let target = e.target as HTMLElement;
             if (target.closest("button") === null || target.closest("button").getAttribute("type") !== "submit") {
                 return;
