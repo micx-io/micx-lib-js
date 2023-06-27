@@ -1,7 +1,7 @@
 import {MicxFormmailerApi} from "./formmail/MicxFormmailerApi";
 
 export class Micx {
-    public static endpoint_root_url : string = "https://ws.micx.de";
+    public static endpoint_root_url : string = "https://ws.micx.io";
     public static subscription_id : string = window["micx_subscription_id"] ?? null;
 
     public static get formMailerApi() {

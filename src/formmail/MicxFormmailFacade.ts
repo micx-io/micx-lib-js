@@ -4,6 +4,7 @@ import {MicxFormmailStyleInterface} from "./MicxFormmailStyleInterface";
 import {MicxFormmailDefaultBootstrapStyle} from "./MicxFormmailDefaultBootstrapStyle";
 import {MicxFormmailerApi} from "./MicxFormmailerApi";
 import {Micx} from "../Micx";
+import {dom_ready} from "../helper/functions";
 
 
 export class MicxFormmailConfig {
@@ -23,40 +24,53 @@ export class MicxFormmailFacade {
 
     }
 
+    protected async isMicxFormElement(element: HTMLElement){
+        if (element.tagName !== "FORM")
+            element = element.closest("form");
+        if (element === null)
+            return false;
+        if ( ! element.hasAttribute("data-micx-formmail-preset"))
+            return false;
+        return true;
+    }
+
+
     /**
      * Observe for submit events from <form data-micx-formmail-preset="default"> forms
      *
      * @param htmlElement
      */
     public async observe(htmlElement: HTMLElement = null) {
-
+        await dom_ready();
         htmlElement = htmlElement || document.body;
 
         if (this.config.preventEnterSubmitForm) {
             htmlElement.addEventListener("submit", async (e: SubmitEvent) => {
-                let form = (e.target as HTMLFormElement).closest("form") as HTMLFormElement;
-                if (form === null)
-                    return;
-                if (!form.hasAttribute("data-micx-formmail-preset"))
+                console.log("submit", e);
+                if ( ! this.isMicxFormElement(e.target as HTMLElement))
                     return;
                 e.preventDefault();
                 e.stopPropagation();
             })
+            htmlElement.addEventListener('keydown', async (event) => {
+                if ( ! this.isMicxFormElement(event.target as HTMLElement))
+                    return;
+                if (event.key === "Enter" && event.target["type"] !== "submit" && event.target["type"] !== "textarea") {
+                    event.preventDefault();
+                }
+            });
         }
 
         htmlElement.addEventListener("click", (e : MouseEvent | any) => {
             let target = e.target as HTMLElement;
-            if (target.closest("button") === null || target.closest("button").getAttribute("type") !== "submit") {
+            if ( ! this.isMicxFormElement(target))
                 return;
-            }
-            let form = (e["explicitOriginalTarget"] || e.target).closest("form");
-            if (form === null)
+
+            let button = target.closest("button[type='submit'],input[type='submit']");
+            if (button === null)
                 return;
-            if (e["pointerType"] === '' && this.config.preventEnterSubmitForm) {
-                return; // Triggered by Enter in Input Form
-            }
-            if (!form.hasAttribute("data-micx-formmail-preset"))
-                return;
+
+            let form = target.closest("form");
             e.preventDefault();
             e.stopPropagation();
             this.processForm(form);
@@ -83,7 +97,7 @@ export class MicxFormmailFacade {
         this.formatter.setFormSending(form);
 
         try {
-            let response = this.formMailer.sendData(
+            let response = await this.formMailer.sendData(
                 formCollectedData.formdata,
                 form.getAttribute("data-micx-formmail-preset") ?? "default"
             );

@@ -12,9 +12,10 @@ export class MicxFormmailHelper {
         let unnamedFieldIndex = 0;
         for (let el of form.querySelectorAll("input,select,textarea") as any) {
             let valid = el.validity.valid;
-            if (el.type.toLowerCase() === "email") {
+            if (el.type.toLowerCase() === "email" && el.value.trim() !== "") {
                 el.value = el.value.trim(); // Trim EMail
-                if ( ! el.value.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/) === null)
+                valid = el.validity.valid;
+                if (el.value.match(/^[\p{L}\d._%+-]+@[\p{L}\d.-]+.[\p{L}]{2,}$/u) === null)
                     valid = false;
             }
 
