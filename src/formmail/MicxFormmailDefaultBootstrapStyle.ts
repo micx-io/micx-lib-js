@@ -4,7 +4,7 @@ import {MicxFormmailStyleInterface} from "./MicxFormmailStyleInterface";
 const invalidFeedbackAttr = "__micxformmail_invalid_feedback";
 
 export class MicxFormmailDefaultBootstrapStyle implements MicxFormmailStyleInterface {
-    markInvalid(el: HTMLElement): void {
+    markInvalid(el: any): void {
         el.classList.add("is-invalid");
         if (el.dataset.invalidMsg) {
             let node = document.createElement("div");
