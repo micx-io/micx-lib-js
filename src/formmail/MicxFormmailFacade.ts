@@ -52,7 +52,7 @@ export class MicxFormmailFacade {
                 e.preventDefault();
                 e.stopPropagation();
             })
-            htmlElement.addEventListener('keydown', async (event) => {
+            htmlElement.addEventListener('keydown', async (event : any) => {
                 if ( ! this.isMicxFormElement(event.target as HTMLElement))
                     return;
                 if (event.key === "Enter" && event.target["type"] !== "submit" && event.target["type"] !== "textarea") {

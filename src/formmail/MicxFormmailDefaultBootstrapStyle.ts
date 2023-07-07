@@ -71,7 +71,7 @@ export class MicxFormmailDefaultBootstrapStyle implements MicxFormmailStyleInter
 
     resetValidation(form: HTMLFormElement) {
 
-        form.querySelectorAll(".is-invalid").forEach(e => {
+        form.querySelectorAll(".is-invalid").forEach((e : any) => {
             if (e[invalidFeedbackAttr] !== undefined) {
                 e[invalidFeedbackAttr].remove();
                 delete e[invalidFeedbackAttr];
