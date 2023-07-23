@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     entry: './src/index.ts',
-
+    target: "web",
     module: {
         rules: [
             {
@@ -11,34 +11,35 @@ module.exports = {
                 include: path.resolve(__dirname, 'src'),
                 //exclude: /node_modules/,
             },
+              {
+              enforce: "pre",
+              test: /\.js$/,
+              loader: "source-map-loader"
+          },
         ],
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
-        modules: [
 
-            "node_modules"
-        ]
     },
     devtool: 'source-map',
     mode: "development",
+
 
 
     plugins: [
     ],
     devServer: {
         port: 4000,
-        liveReload: true,
+
         static: {
-            directory: path.join(__dirname, 'dist'),
+            directory: path.join(__dirname, 'www'),
             serveIndex: true,
-            watch: true
         },
     },
     output: {
         publicPath: "",
-        filename: 'kasimir.js',
-        path: path.resolve(__dirname, 'dist'),
-        libraryTarget: "commonjs-module"
+        filename: 'micx-lib.js',
+        path: path.resolve(__dirname, 'dist')
     },
 };
