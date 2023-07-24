@@ -40,11 +40,11 @@ export class MicxImageUrlDecoderV2 {
         let [encodedAspect, encodedWidths] = parts[2].split("_");
         const [filename, extensions] = parts[3].split(".");
 
-        encodedWidths = encodedWidths.replaceAll(/([a-zA-Z])/g, (w) => (MicxImageUrlDecoderV2.WIDTH_SHORTCUTS[w] ?? w) + "-");
+        encodedWidths = encodedWidths.replaceAll(/([a-zA-Z])/g, (w) => "-" + (MicxImageUrlDecoderV2.WIDTH_SHORTCUTS[w] ?? w) + "-");
         encodedAspect = encodedAspect.replaceAll(/([a-zA-Z])/g, (w) => MicxImageUrlDecoderV2.RATIO_SHORTCUTS[w] ?? w );
 
         const aspect = encodedAspect.split('-').join('/')
-        const widths = encodedWidths.split('-');
+        const widths = encodedWidths.split('-').filter(w => w.trim() !== "");
 
         return {
             id,

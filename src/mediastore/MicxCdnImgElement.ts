@@ -1,6 +1,6 @@
 import {MicxImageUrlDecoderV2, MicxImageUrlDecoderV2Result} from "./MicxImageUrlDecoderV2";
 import {MicxImageUrlEncoderV2} from "./MicxImageUrlEncoderV2";
-import {ka_dom_ready} from "@kasimirjs/embed";
+import {ka_dom_ready, ka_sleep} from "@kasimirjs/embed";
 
 
 let elementIndex = 0;
@@ -38,13 +38,15 @@ export class MicxCdnImgElement {
 
     private async loadHiRes(dimensions : MicxImageUrlDecoderV2Result) {
         await ka_dom_ready();
-        // detect actual dimensions of image element
-        let w = this.image.getBoundingClientRect().width;
+        await ka_sleep(10); // Settle image size
+        // detect actual dimensions of image element (Fallback innerWidth for Safari Garbage)
+        let w = this.image.getBoundingClientRect().width ?? window.innerWidth;
 
         // Get best fitting width from dimensions
         let bestWidth = parseInt(dimensions.widths[0]);
         for(let wn of dimensions.widths) {
             let wnI = parseInt(wn);
+
             if (wnI < w) {
                 break;
             }

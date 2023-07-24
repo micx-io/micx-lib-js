@@ -41,6 +41,7 @@ export class MicxImageUrlEncoderV2 {
     }
 
     setWidths(widths: number[]): this {
+        console.log("set widths", widths);
         this.widths = widths.map(width => width.toString());
         return this;
     }
