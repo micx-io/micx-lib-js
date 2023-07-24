@@ -1,6 +1,6 @@
 {
   "name": "@micx/lib-js",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.module.js",
@@ -29,12 +29,11 @@
   },
   "homepage": "https://github.com/kasimirjs/kasi-editor#readme",
   "dependencies": {
+    "@kasimirjs/embed": "^1.1.2",
     "reflect-metadata": "^0.1",
     "source-map-loader": "^4.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^29",
-    "ts-jest": "^29",
     "ts-loader": "^9",
     "ts-node": "^10",
     "typescript": ">=4.0",

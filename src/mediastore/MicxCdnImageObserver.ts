@@ -1,4 +1,5 @@
 import {MicxCdnImgElement} from "./MicxCdnImgElement";
+import {ka_await_element, ka_sleep} from "@kasimirjs/embed";
 
 
 export class MicxCdnImageObserver {
@@ -9,7 +10,6 @@ export class MicxCdnImageObserver {
             return;
         (image as any)["micx_cdn_observer"] = true;
 
-        console.log("Apply");
         if (image.src.indexOf("/v2/") === -1)
             return; // Not a CDN image
 
@@ -17,15 +17,18 @@ export class MicxCdnImageObserver {
     }
 
 
-    public observe(element : HTMLElement = null) {
-        if (element === null)
-            element = document.body;
+    public async observe() {
+        await ka_await_element("body");
 
-        window.setInterval(() => {
+        let round = 1;
+        while(true) {
             document.querySelectorAll("img").forEach(img => {
                 this.applyToImg(img);
-            })
-        }, 100);
+            });
+            await ka_sleep(100 * round++);
+            if (round > 50)
+                round = 50;
+        }
     }
 
 }

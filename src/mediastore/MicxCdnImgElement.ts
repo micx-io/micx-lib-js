@@ -1,5 +1,6 @@
 import {MicxImageUrlDecoderV2, MicxImageUrlDecoderV2Result} from "./MicxImageUrlDecoderV2";
 import {MicxImageUrlEncoderV2} from "./MicxImageUrlEncoderV2";
+import {ka_dom_ready} from "@kasimirjs/embed";
 
 
 let elementIndex = 0;
@@ -10,7 +11,7 @@ export class MicxCdnImgElement {
     private path : string;
 
 
-    public  constructor(public readonly image : HTMLImageElement) {
+    public constructor(public readonly image : HTMLImageElement) {
         let uri = image.src;
         uri.replace(/^(.*?\/)(v2\/.*)$/, (p0, base, path) => {
             this.base = base;
@@ -19,10 +20,11 @@ export class MicxCdnImgElement {
         });
         let dimensions = (new MicxImageUrlDecoderV2(this.path)).decode();
 
-        console.log("MicxCdnImgElement", dimensions);
         this.setOptimalImageDimensions(dimensions);
 
+
         // wait for image to be fully loaded
+
         let listener = () => {
             this.image.removeEventListener("load", listener);
             this.loadHiRes(dimensions);
@@ -32,15 +34,13 @@ export class MicxCdnImgElement {
         if (this.image.complete === true) {
             this.loadHiRes(dimensions);
         }
-
-
-
     }
 
-    private loadHiRes(dimensions : MicxImageUrlDecoderV2Result) {
+    private async loadHiRes(dimensions : MicxImageUrlDecoderV2Result) {
+        await ka_dom_ready();
         // detect actual dimensions of image element
         let w = this.image.getBoundingClientRect().width;
-        console.log("load hires");
+
         // Get best fitting width from dimensions
         let bestWidth = parseInt(dimensions.widths[0]);
         for(let wn of dimensions.widths) {

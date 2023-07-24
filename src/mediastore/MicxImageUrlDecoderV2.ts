@@ -33,7 +33,6 @@ export class MicxImageUrlDecoderV2 {
 
     decode(): MicxImageUrlDecoderV2Result {
         const parts = this.url.split('/');
-        console.log(parts);
 
         if (parts.length < 4) throw new Error("Invalid url format");
 
