@@ -17,7 +17,7 @@ export class MicxFormmailerApi {
         data["__micxlib_rev"] = MicxlibRev;
 
         // make all keys of data lowercase and replace - and space by _
-        let data2 = {};
+        let data2 : any = {};
         for (let key in data) {
             let key2 = key.toLowerCase().replace(/[\s]/g, "_").replace(/-/g, "");
             data2[key2] = data[key];
