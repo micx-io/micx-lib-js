@@ -18,14 +18,12 @@ export class MicxCdnImageObserver {
 
 
     public async observe() {
-        await ka_await_element("body");
-
         let round = 1;
         while(true) {
             document.querySelectorAll("img").forEach(img => {
                 this.applyToImg(img);
             });
-            await ka_sleep(100 * round++);
+            await ka_sleep(10 * round++);
             if (round > 50)
                 round = 50;
         }

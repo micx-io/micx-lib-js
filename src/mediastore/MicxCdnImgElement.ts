@@ -10,8 +10,15 @@ export class MicxCdnImgElement {
     private base : string;
     private path : string;
 
+    private myElementIndex : number;
+
+    private isPreloaded = false;
 
     public constructor(public readonly image : HTMLImageElement) {
+        this.myElementIndex = elementIndex++;
+
+        console.warn("elementIndex", this.myElementIndex);
+
         let uri = image.src;
         uri.replace(/^(.*?\/)(v2\/.*)$/, (p0, base, path) => {
             this.base = base;
@@ -31,7 +38,7 @@ export class MicxCdnImgElement {
         };
         this.image.addEventListener("load", listener);
 
-        if (this.image.complete === true) {
+        if (this.image.complete === true || this.myElementIndex < 3) {
             this.loadHiRes(dimensions);
         }
     }
@@ -41,6 +48,7 @@ export class MicxCdnImgElement {
         await ka_sleep(10); // Settle image size
         // detect actual dimensions of image element (Fallback innerWidth for Safari Garbage)
         let w = this.image.getBoundingClientRect().width ?? window.innerWidth;
+
 
         // Get best fitting width from dimensions
         let bestWidth = parseInt(dimensions.widths[0]);
@@ -59,8 +67,20 @@ export class MicxCdnImgElement {
         e2.setExtensions(dimensions.extensions);
         let url = this.base + "/" +  e2.toString();
 
+
+        if (this.myElementIndex < 3 && ! this.isPreloaded) {
+            this.isPreloaded = true;
+            let preloadLink = document.createElement("link");
+            preloadLink.setAttribute("rel", "preload");
+            preloadLink.setAttribute("fetchpriority", "high");
+            preloadLink.setAttribute("as", "image");
+            preloadLink.setAttribute("href", url);
+            document.head.append(preloadLink);
+        }
+
         let preload = new Image();
         preload.src = url;
+
         preload.addEventListener("load", () => {
             this.image.setAttribute("src", url);
             this.image.classList.remove("micx-image-loader");
@@ -88,7 +108,7 @@ export class MicxCdnImgElement {
             w = wnI;
         }
 
-        if (elementIndex++ > 5) {
+        if (this.myElementIndex > 5) {
             // set lazy loading
             this.image.setAttribute("loading", "lazy");
             this.image.setAttribute("src", this.image.getAttribute("src"));
