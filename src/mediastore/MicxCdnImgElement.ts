@@ -44,7 +44,10 @@ export class MicxCdnImgElement {
     }
 
     private async loadHiRes(dimensions : MicxImageUrlDecoderV2Result) {
-       // await ka_dom_ready();
+        if (this.myElementIndex < 3) {
+            await ka_dom_ready();
+            await ka_sleep(200);
+        }
         await ka_sleep(10); // Settle image size
 
         // detect actual dimensions of image element (Fallback innerWidth for Safari Garbage)
