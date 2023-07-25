@@ -46,8 +46,11 @@ export class MicxCdnImgElement {
     private async loadHiRes(dimensions : MicxImageUrlDecoderV2Result) {
        // await ka_dom_ready();
         await ka_sleep(10); // Settle image size
+
         // detect actual dimensions of image element (Fallback innerWidth for Safari Garbage)
-        let w = this.image.getBoundingClientRect().width ?? window.innerWidth;
+        let w = this.image.getBoundingClientRect().width;
+        if (w === 0 || w === null)
+            w = window.innerWidth;
 
 
         // Get best fitting width from dimensions
