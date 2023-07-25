@@ -16,6 +16,14 @@ export class MicxFormmailerApi {
         data["__sending_hostname"] = window.location.href;
         data["__micxlib_rev"] = MicxlibRev;
 
+        // make all keys of data lowercase and replace - and space by _
+        let data2 = {};
+        for (let key in data) {
+            let key2 = key.toLowerCase().replace(/[\s]/g, "_").replace(/-/g, "");
+            data2[key2] = data[key];
+        }
+        data = data2;
+
         let result = await fetch(this.endpoint_url + `?&subscription_id=${this.subscription_id}&preset=${preset}`, {
             method: "POST",
             headers: {"content-type": "application/json"},
