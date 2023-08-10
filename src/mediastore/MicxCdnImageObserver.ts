@@ -1,5 +1,6 @@
 import {MicxCdnImgElement} from "./MicxCdnImgElement";
-import {ka_await_element, ka_sleep} from "@kasimirjs/embed";
+import {sleep} from "../helper/functions";
+
 
 
 export class MicxCdnImageObserver {
@@ -23,7 +24,7 @@ export class MicxCdnImageObserver {
             document.querySelectorAll("img").forEach(img => {
                 this.applyToImg(img);
             });
-            await ka_sleep(10 * round++);
+            await sleep(10 * round++);
             if (round > 50)
                 round = 50;
         }

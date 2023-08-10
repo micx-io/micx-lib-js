@@ -1,6 +1,7 @@
 import {MicxImageUrlDecoderV2, MicxImageUrlDecoderV2Result} from "./MicxImageUrlDecoderV2";
 import {MicxImageUrlEncoderV2} from "./MicxImageUrlEncoderV2";
-import {ka_dom_ready, ka_sleep} from "@kasimirjs/embed";
+import {dom_ready, sleep} from "../helper/functions";
+
 
 
 let elementIndex = 0;
@@ -45,10 +46,10 @@ export class MicxCdnImgElement {
 
     private async loadHiRes(dimensions : MicxImageUrlDecoderV2Result) {
         if (this.myElementIndex < 3) {
-            await ka_dom_ready();
-            await ka_sleep(200);
+            await dom_ready();
+            await sleep(200);
         }
-        await ka_sleep(10); // Settle image size
+        await sleep(10); // Settle image size
 
         // detect actual dimensions of image element (Fallback innerWidth for Safari Garbage)
         let w = this.image.getBoundingClientRect().width;
