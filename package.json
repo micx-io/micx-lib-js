@@ -1,9 +1,9 @@
 {
   "name": "@micx/lib-js",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "",
-  "main": "./dist/index.module.js",
-  "module": "./dist/index.module.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "directories": {
     "doc": "docs",
@@ -13,7 +13,7 @@
     "/dist"
   ],
   "scripts": {
-    "make.mjs": "tsc -d && mv dist/index.js dist/index.module.js",
+    "make.mjs": "tsc -d ",
     "make.cjs": "tsc -m commonjs",
     "build": "npm run make.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
