@@ -18,7 +18,7 @@ export class MicxCdnImgElement {
     public constructor(public readonly image : HTMLImageElement) {
         this.myElementIndex = elementIndex++;
 
-        console.warn("elementIndex", this.myElementIndex);
+        console.warn("elementIndex", this.myElementIndex, image);
 
         let uri = image.src;
         uri.replace(/^(.*?\/)(v2\/.*)$/, (p0, base, path) => {
