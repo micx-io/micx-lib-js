@@ -23,10 +23,11 @@ export class MicxCdnImageObserver {
     public async observe() {
         let round = 1;
         while(true) {
+            await sleep(20 * round++);
             document.querySelectorAll("img").forEach(img => {
                 this.applyToImg(img);
             });
-            await sleep(10 * round++);
+
             if (round > 50)
                 round = 50;
         }
