@@ -3,8 +3,7 @@ import {MicxImageUrlEncoderV2} from "./MicxImageUrlEncoderV2";
 import {dom_ready, sleep} from "../helper/functions";
 
 
-
-let elementIndex = 0;
+ const loadDirect = 2;
 
 export class MicxCdnImgElement {
 
@@ -15,10 +14,8 @@ export class MicxCdnImgElement {
 
     private isPreloaded = false;
 
-    public constructor(public readonly image : HTMLImageElement) {
-        this.myElementIndex = elementIndex++;
-
-        console.warn("elementIndex", this.myElementIndex, image);
+    public constructor(public readonly image : HTMLImageElement, index : number) {
+        this.myElementIndex = index;
 
         let uri = image.src;
         uri.replace(/^(.*?\/)(v2\/.*)$/, (p0, base, path) => {
@@ -39,15 +36,15 @@ export class MicxCdnImgElement {
         };
         this.image.addEventListener("load", listener);
 
-        if (this.image.complete === true || this.myElementIndex < 3) {
+        if (this.image.complete === true || this.myElementIndex < loadDirect) {
             this.loadHiRes(dimensions);
         }
     }
 
     private async loadHiRes(dimensions : MicxImageUrlDecoderV2Result) {
-        if (this.myElementIndex < 3) {
+        if (this.myElementIndex < loadDirect) {
             await dom_ready();
-            await sleep(200);
+            await sleep(50);
         }
         await sleep(10); // Settle image size
 
@@ -75,7 +72,7 @@ export class MicxCdnImgElement {
         let url = this.base + "/" +  e2.toString();
 
 
-        if (this.myElementIndex < 3 && ! this.isPreloaded) {
+        if (this.myElementIndex < loadDirect && ! this.isPreloaded) {
             this.isPreloaded = true;
             let preloadLink = document.createElement("link");
             preloadLink.setAttribute("rel", "preload");
@@ -115,7 +112,7 @@ export class MicxCdnImgElement {
             w = wnI;
         }
 
-        if (this.myElementIndex > 5) {
+        if (this.myElementIndex >= loadDirect) {
             // set lazy loading
             this.image.setAttribute("loading", "lazy");
             this.image.setAttribute("src", this.image.getAttribute("src"));
