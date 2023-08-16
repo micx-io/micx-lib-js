@@ -1,6 +1,7 @@
 import {MicxImageUrlDecoderV2, MicxImageUrlDecoderV2Result} from "./MicxImageUrlDecoderV2";
 import {MicxImageUrlEncoderV2} from "./MicxImageUrlEncoderV2";
 import {dom_ready, sleep} from "../helper/functions";
+import {hitIndex} from "../hit-index";
 
 
  const loadDirect = 2;
@@ -30,6 +31,9 @@ export class MicxCdnImgElement {
 
         // wait for image to be fully loaded
 
+
+
+
         let listener = () => {
             this.image.removeEventListener("load", listener);
             this.loadHiRes(dimensions);
@@ -42,11 +46,14 @@ export class MicxCdnImgElement {
     }
 
     private async loadHiRes(dimensions : MicxImageUrlDecoderV2Result) {
-        if (this.myElementIndex < loadDirect) {
-            await dom_ready();
-            await sleep(50);
+        await dom_ready();
+
+        // If first load of website: wait 2 seconds to load styles first.
+        if (hitIndex === 1) {
+            await sleep(2000);
         }
-        await sleep(10); // Settle image size
+
+        await sleep(40); // Settle image size
 
         // detect actual dimensions of image element (Fallback innerWidth for Safari Garbage)
         let w = this.image.getBoundingClientRect().width;
