@@ -39,6 +39,9 @@ export class MicxCdnImgElement {
 
         image.classList.add("micx-image-loader");
 
+        if (uri.endsWith(".svg")) {
+            return; // SVG images come in the right size
+        }
 
         if (index === 1) {
             // Load first image directly (LCP)
@@ -131,8 +134,6 @@ export class MicxCdnImgElement {
             }
             w = wnI;
         }
-
-        console.log("found inner width: " + w + " for " + dimensions.widths.join(", ") + " and " + innerWidth);
 
         if (this.myElementIndex >= loadDirect) {
             // set lazy loading
