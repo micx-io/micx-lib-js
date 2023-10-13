@@ -96,6 +96,7 @@ export class MicxCdnImgElement {
         this.image.setAttribute("src", url);
 
         this.image.addEventListener("load", () => {
+            this.image.style.backgroundImage = "none";
             this.image.classList.add("loaded");
 
         });
