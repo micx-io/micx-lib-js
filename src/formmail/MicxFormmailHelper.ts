@@ -35,15 +35,21 @@ export class MicxFormmailHelper {
 
             name = name.trim();
 
+            let value = el.value;
+
             if (el.type === "checkbox" && el["checked"] === false)
                 continue;
+            if (el.type === "date") {
+                if (value !== "")
+                    value = new Date(value).toLocaleDateString('de-DE');
+            }
             if (name.endsWith("[]")) {
                 name = name.slice(0, -2);
                 if (!Array.isArray(formdata[name]))
                     formdata[name] = [];
-                formdata[name].push(el.value);
+                formdata[name].push(value);
             } else {
-                formdata[name] = el.value;
+                formdata[name] = value;
             }
         }
         return {formdata, invalidForms};

@@ -11,6 +11,7 @@ export class MicxCdnImgElement {
     private base : string;
     private path : string;
 
+    private origUri : string;
     private myElementIndex : number;
 
     private isPreloaded = false;
@@ -19,6 +20,7 @@ export class MicxCdnImgElement {
         this.myElementIndex = index;
 
         let uri = image.src;
+        this.origUri = uri;
         uri.replace(/^(.*?\/)(v2\/.*)$/, (p0, base, path) => {
             this.base = base;
             this.path = path;
@@ -33,6 +35,7 @@ export class MicxCdnImgElement {
 
 
 
+        image.classList.add("micx-image-loader");
 
         let listener = () => {
             this.image.removeEventListener("load", listener);
@@ -50,7 +53,7 @@ export class MicxCdnImgElement {
 
         // If first load of website: wait 2 seconds to load styles first.
         if (hitIndex === 1) {
-            await sleep(2000);
+            await sleep(500);
         }
 
         await sleep(40); // Settle image size
@@ -78,7 +81,6 @@ export class MicxCdnImgElement {
         e2.setExtensions(dimensions.extensions);
         let url = this.base + "/" +  e2.toString();
 
-
         if (this.myElementIndex < loadDirect && ! this.isPreloaded) {
             this.isPreloaded = true;
             let preloadLink = document.createElement("link");
@@ -89,13 +91,22 @@ export class MicxCdnImgElement {
             document.head.append(preloadLink);
         }
 
+        this.image.style.backgroundImage = "url(" + this.origUri + ")";
+        this.image.setAttribute("src", url);
+
+        this.image.addEventListener("load", () => {
+            this.image.classList.add("loaded");
+
+        });
+        /*
         let preload = new Image();
         preload.src = url;
 
         preload.addEventListener("load", () => {
-            this.image.setAttribute("src", url);
-            this.image.classList.remove("micx-image-loader");
+
         });
+
+         */
     }
 
     /**

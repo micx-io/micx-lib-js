@@ -1,6 +1,6 @@
 import {MicxCdnImageObserver} from "./mediastore/MicxCdnImageObserver";
 
-export const MicxlibRev = "1.0.6";
+export const MicxlibRev = "1.0.7";
 
 export * from './Micx';
 export * from './formmail/MicxFormmailerApi';
