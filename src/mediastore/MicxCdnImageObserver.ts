@@ -23,7 +23,7 @@ export class MicxCdnImageObserver {
     public async observe() {
         let round = 1;
         while(true) {
-            await sleep(50 * round++);
+            await sleep(25 * round++);
             document.querySelectorAll("img").forEach(img => {
                 this.applyToImg(img);
             });

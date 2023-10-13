@@ -6,6 +6,8 @@ import {hitIndex} from "../hit-index";
 
  const loadDirect = 2;
 
+ const innerWidth = window.innerWidth;
+
 export class MicxCdnImgElement {
 
     private base : string;
@@ -37,10 +39,21 @@ export class MicxCdnImgElement {
 
         image.classList.add("micx-image-loader");
 
-        let listener = () => {
+
+        if (index === 1) {
+            // Load first image directly (LCP)
+            this.loadHiRes(dimensions);
+            return;
+        }
+
+        let listener = async () => {
+            await dom_ready();
+            if (hitIndex === 1)
+                await sleep(2500);
             this.image.removeEventListener("load", listener);
             this.loadHiRes(dimensions);
         };
+
         this.image.addEventListener("load", listener);
 
         if (this.image.complete === true || this.myElementIndex < loadDirect) {
@@ -51,17 +64,12 @@ export class MicxCdnImgElement {
     private async loadHiRes(dimensions : MicxImageUrlDecoderV2Result) {
         await dom_ready();
 
-        // If first load of website: wait 2 seconds to load styles first.
-        if (hitIndex === 1) {
-            await sleep(500);
-        }
-
         await sleep(40); // Settle image size
 
         // detect actual dimensions of image element (Fallback innerWidth for Safari Garbage)
         let w = this.image.getBoundingClientRect().width;
         if (w === 0 || w === null)
-            w = window.innerWidth;
+            w = innerWidth;
 
 
         // Get best fitting width from dimensions
@@ -81,16 +89,9 @@ export class MicxCdnImgElement {
         e2.setExtensions(dimensions.extensions);
         let url = this.base + "/" +  e2.toString();
 
-        if (this.myElementIndex < loadDirect && ! this.isPreloaded) {
-            this.isPreloaded = true;
-            let preloadLink = document.createElement("link");
-            preloadLink.setAttribute("rel", "preload");
-            preloadLink.setAttribute("fetchpriority", "high");
-            preloadLink.setAttribute("as", "image");
-            preloadLink.setAttribute("href", url);
-            document.head.append(preloadLink);
-        }
 
+
+        this.image.style.backgroundSize = "cover";
         this.image.style.backgroundImage = "url(" + this.origUri + ")";
         this.image.setAttribute("src", url);
 
@@ -124,11 +125,13 @@ export class MicxCdnImgElement {
         let w = parseInt(dimensions.widths[0]);
         for(let wn of dimensions.widths) {
             let wnI = parseInt(wn);
-            if (wnI < window.innerWidth) {
+            if (wnI < innerWidth) {
                 break;
             }
             w = wnI;
         }
+
+        console.log("found inner width: " + w + " for " + dimensions.widths.join(", ") + " and " + innerWidth);
 
         if (this.myElementIndex >= loadDirect) {
             // set lazy loading
