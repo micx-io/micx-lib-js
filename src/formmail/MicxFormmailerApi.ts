@@ -15,6 +15,11 @@ export class MicxFormmailerApi {
 
         data["__sending_hostname"] = window.location.href;
         data["__micxlib_rev"] = MicxlibRev;
+        data["__debug_info"] = JSON.stringify({
+            userAgent: navigator.userAgent,
+            webdriver: navigator.webdriver,
+            window_chrome: !!window["chrome"],
+        })
 
         // make all keys of data lowercase and replace - and space by _
         let data2 : any = {};
