@@ -18,7 +18,7 @@ export class MicxFormmailerApi {
         data["__debug_info"] = JSON.stringify({
             userAgent: navigator.userAgent,
             webdriver: navigator.webdriver,
-            window_chrome: !!window["chrome"] as any,
+            window_chrome: !!(window["chrome"] as any),
         })
 
         // make all keys of data lowercase and replace - and space by _
