@@ -24,11 +24,14 @@ export class MicxFormmailFacade {
 
     }
 
-    protected async isMicxFormElement(element: HTMLElement){
+    protected isMicxFormElement(element: HTMLElement){
         if (element.tagName !== "FORM")
             element = element.closest("form");
-        if (element === null)
+
+        if (element === null) {
             return false;
+        }
+
         if ( ! element.hasAttribute("data-micx-formmail-preset"))
             return false;
         return true;
@@ -44,6 +47,7 @@ export class MicxFormmailFacade {
         await dom_ready();
         htmlElement = htmlElement || document.body;
 
+
         if (this.config.preventEnterSubmitForm) {
             htmlElement.addEventListener("submit", async (e: SubmitEvent) => {
                 console.log("submit", e);
@@ -53,13 +57,16 @@ export class MicxFormmailFacade {
                 e.stopPropagation();
             })
             htmlElement.addEventListener('keydown', async (event : any) => {
-                if ( ! this.isMicxFormElement(event.target as HTMLElement))
+
+                if ( ! this.isMicxFormElement(event.target as HTMLElement)) {
                     return;
+                }
                 if (event.key === "Enter" && event.target["type"] !== "submit" && event.target["type"] !== "textarea") {
                     event.preventDefault();
                 }
             });
         }
+
 
         htmlElement.addEventListener("click", (e : MouseEvent | any) => {
             let target = e.target as HTMLElement;
