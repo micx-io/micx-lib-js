@@ -61,7 +61,7 @@ export class MicxFormmailFacade {
                 if ( ! this.isMicxFormElement(event.target as HTMLElement)) {
                     return;
                 }
-                if (event.key === "Enter" && event.target["type"] !== "submit" && event.target["type"] !== "textarea") {
+                if (event.key === "Enter" && event.target["type"] !== "submit" && event.target["type"] !== "textarea" && event.target["type"] !== "button" && event.target.tagName !== "NXA-FORM-TEXTAREA") {
                     event.preventDefault();
                 }
             });
