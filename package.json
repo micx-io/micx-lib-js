@@ -1,6 +1,6 @@
 {
   "name": "@micx/lib-js",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
