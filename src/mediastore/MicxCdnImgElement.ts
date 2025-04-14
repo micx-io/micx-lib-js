@@ -6,7 +6,7 @@ import {hitIndex} from "../hit-index";
 
  const loadDirect = 2;
 
- const innerWidth = window.innerWidth < 600 ? (window.innerWidth * 2) : (window.innerWidth * 1.2);
+ const innerWidth = window.innerWidth;
 
 
 export class MicxCdnImgElement {
@@ -74,6 +74,14 @@ export class MicxCdnImgElement {
         let w = this.image.getBoundingClientRect().width;
         if (w === 0 || w === null)
             w = innerWidth;
+
+        // Add some margin
+        if (innerWidth < 600) {
+            // Zoomable images for mobile browsers
+            w = w * 2;
+        } else {
+            w = w * 1.1;
+        }
 
 
         // Get best fitting width from dimensions
