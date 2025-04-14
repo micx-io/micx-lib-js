@@ -6,7 +6,8 @@ import {hitIndex} from "../hit-index";
 
  const loadDirect = 2;
 
- const innerWidth = window.innerWidth;
+ const innerWidth = window.innerWidth < 600 ? (window.innerWidth * 2) : (window.innerWidth * 1.2);
+
 
 export class MicxCdnImgElement {
 
