@@ -75,14 +75,6 @@ export class MicxCdnImgElement {
         if (w === 0 || w === null)
             w = innerWidth;
 
-        // Add some margin
-        if (innerWidth < 600) {
-            // Zoomable images for mobile browsers
-            w = w * 2;
-        } else {
-            w = w * 1.1;
-        }
-
 
         // Get best fitting width from dimensions
         let bestWidth = parseInt(dimensions.widths[0]);
