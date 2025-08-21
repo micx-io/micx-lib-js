@@ -1,6 +1,6 @@
 {
     "name": "@micx/lib-js",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "contributions": {
         "html": {
             "elements": [
@@ -14,13 +14,31 @@
                             "description": "Enable debug mode (output debug information to the console)"
                         },
                         {
-                            "name": "adjust-sizes",
+                            "name": "default-size-adjust",
                             "type": "string",
                             "description": "Set size adjustments for different screen sizes. Format: '<min-screen-width>:<zoom-factor>;<min-screen-width>:<zoom-factor>;...'. Example: '600:2;900:1.5' means for screens wider than 600px use zoom factor 1.2, for screens wider than 900px use zoom factor 1.5."
                         }
                     ]
                 }
+            ],
+            "attributes": [
+                {
+                    "name": "data-size-adjust",
+                    "description": "Load a bigger or smaller version based on the screen size. Format '<min-screen-width>:<zoom-factor>;<min-screen-width>:<zoom-factor>;...'. Example: '600:2;900:1.5' means for screens wider than 600px use zoom factor 1.2, for screens wider than 900px use zoom factor 1.5.",
+                    "doc-url": "https://github.com/micx-io/micx-lib-js",
+                    "value": {
+                        "type": "string"
+                    },
+                    "sources": [
+                        {
+                            "module": "image-loader.js",
+                            "symbol": "…"
+                        }
+                    ],
+                    "owner": "img"
+                }
             ]
-        }
+        },
+
     }
 }

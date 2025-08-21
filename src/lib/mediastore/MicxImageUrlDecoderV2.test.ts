@@ -47,8 +47,7 @@ describe('MicxImageUrlDecoderV2.isCdnImage', () => {
 
 describe('MicxImageUrlDecoderV2.decode', () => {
   it('decodes ratio and width shortcuts correctly', () => {
-    const decoder = new MicxImageUrlDecoderV2('v2/abc123/d_gfedcba/hero.jpg_webp_avif');
-    const result = decoder.decode();
+    const result = MicxImageUrlDecoderV2.decode('v2/abc123/d_gfedcba/hero.jpg_webp_avif');
 
     expect(result.id).toBe('abc123');
     expect(result.aspectRatio).toBe('16/9'); // 'd' => '16-9' => '16/9'
@@ -58,8 +57,8 @@ describe('MicxImageUrlDecoderV2.decode', () => {
   });
 
   it('decodes numeric aspect and widths without shortcuts', () => {
-    const decoder = new MicxImageUrlDecoderV2('v2/xyz/3-2_1280-640-320/sample.png');
-    const result = decoder.decode();
+    const decoder = new MicxImageUrlDecoderV2();
+    const result = MicxImageUrlDecoderV2.decode('v2/xyz/3-2_1280-640-320/sample.png');
 
     expect(result.id).toBe('xyz');
     expect(result.aspectRatio).toBe('3/2');
@@ -69,7 +68,6 @@ describe('MicxImageUrlDecoderV2.decode', () => {
   });
 
   it('throws on invalid format (too few parts)', () => {
-    const decoder = new MicxImageUrlDecoderV2('v2/onlytwo/parts');
-    expect(() => decoder.decode()).toThrowError(/Invalid url format/i);
+    expect(() => MicxImageUrlDecoderV2.decode('v2/onlytwo/parts')).toThrowError(/Invalid url format/i);
   });
 })
