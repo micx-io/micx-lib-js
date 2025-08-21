@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-node@v3
 
         with:
-          node-version: '16.x'
+          node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
           scope: "@micx"
       - run: npm install
