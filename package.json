@@ -13,9 +13,7 @@
         "/dist"
     ],
     "scripts": {
-        "make.mjs": "tsc -d ",
-        "make.cjs": "tsc -m commonjs",
-        "build": "npm run make.mjs",
+        "build": "vite build",
         "test": "vitest run"
     },
     "repository": {
