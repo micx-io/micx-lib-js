@@ -5,13 +5,6 @@
     "main": "./index.js",
     "types": "./index.d.ts",
     "type": "module",
-    "directories": {
-        "doc": "docs",
-        "lib": "lib"
-    },
-    "files": [
-        "/dist"
-    ],
     "scripts": {
         "build": "vite build",
         "test": "vitest run"
@@ -27,9 +20,11 @@
     },
     "homepage": "https://github.com/micx-io/micx-lib-js#readme",
     "dependencies": {
+
         "@trunkjs/browser-utils": "^1.0.12"
     },
     "devDependencies": {
+        "@nx/vite": "^21.4.0",
         "@types/node": "^24.3.0",
         "jsdom": "~26.1.0",
         "typescript": "~5.8.3",

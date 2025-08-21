@@ -5,8 +5,8 @@ import  path from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
-const projectName = 'nte-split-view';
-const dirName = `nextrap-elements/nte-split-view`;
+const projectName = 'project';
+const dirName = `build`;
 
 export default defineConfig(() => ({
   server: {
@@ -17,7 +17,8 @@ export default defineConfig(() => ({
   root: __dirname,
   cacheDir: `./node_modules/.vite/${dirName}`,
   plugins: [
-
+    nxViteTsPaths(),
+    nxCopyAssetsPlugin(['*.md']),
     dts({ entryRoot: 'src', tsconfigPath: path.join(__dirname, 'tsconfig.json') }),
   ],
   // Uncomment this if you are using workers.
