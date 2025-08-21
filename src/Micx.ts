@@ -1,4 +1,4 @@
-import {MicxFormmailerApi} from "./formmail/MicxFormmailerApi";
+import {MicxFormmailerApi} from "./lib/formmail/MicxFormmailerApi";
 
 export class Micx {
     public static endpoint_root_url : string = "https://ws.micx.io";

@@ -1,5 +1,6 @@
 import {MicxCdnImgElement} from "./MicxCdnImgElement";
 import {dom_ready, sleep} from "../helper/functions";
+import {MicxImageUrlDecoderV2} from "./MicxImageUrlDecoderV2";
 
 
 let cdnIdx = 0;
@@ -11,8 +12,8 @@ export class MicxCdnImageObserver {
             return;
         (image as any)["micx_cdn_observer"] = true;
 
-        if (image.src.indexOf("/v2/") === -1)
-            return; // Not a CDN image
+        if (!MicxImageUrlDecoderV2.isCdnImage(image.src))
+            return; // Not a CDN v2 encoded image
         if ( ! image.hasAttribute("micx_cdn_idx"))
             image.setAttribute("micx_cdn_idx", "" + cdnIdx++);
 

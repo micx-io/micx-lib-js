@@ -1,12 +1,32 @@
 import {MicxImageUrlDecoderV2, MicxImageUrlDecoderV2Result} from "./MicxImageUrlDecoderV2";
 import {MicxImageUrlEncoderV2} from "./MicxImageUrlEncoderV2";
 import {dom_ready, sleep} from "../helper/functions";
-import {hitIndex} from "../hit-index";
+import {hitIndex} from "../../hit-index";
+import {waitForDomContentLoaded, waitForLoad} from "@trunkjs/browser-utils";
 
 
  const loadDirect = 2;
 
  const innerWidth = window.innerWidth;
+
+
+ const cdnWeakMap = new WeakMap<HTMLImageElement, MicxCdnImgElement>();
+
+ export function micxCdnImgElement(image : HTMLImageElement) : MicxCdnImgElement | null {
+    if (cdnWeakMap.has(image)) {
+        return cdnWeakMap.get(image) ?? null;
+    }
+
+    if (image.src.indexOf("/v2/") === -1)
+        return null; // Not a CDN image
+
+    if ( ! image.hasAttribute("micx_cdn_idx"))
+        image.setAttribute("micx_cdn_idx", "" + hitIndex);
+
+    let e = new MicxCdnImgElement(image, parseInt(image.getAttribute("micx_cdn_idx")));
+    cdnWeakMap.set(image, e);
+    return e;
+ }
 
 
 export class MicxCdnImgElement {
@@ -29,9 +49,11 @@ export class MicxCdnImgElement {
             this.path = path;
             return "";
         });
-        let dimensions = (new MicxImageUrlDecoderV2(this.path)).decode();
+
+        let dimensions = MicxImageUrlDecoderV2.decode(this.path);
 
         this.setOptimalImageDimensions(dimensions);
+
 
 
         // wait for image to be fully loaded
@@ -44,29 +66,35 @@ export class MicxCdnImgElement {
             return; // SVG images come in the right size
         }
 
-        if (index === 1) {
-            // Load first image directly (LCP)
+        if (this.image.getAttribute("loading") === "eager") {
+            // Load eager images directly (LCP)
             this.loadHiRes(dimensions);
             return;
         }
 
         let listener = async () => {
-            await dom_ready();
-            if (hitIndex === 1)
-                await sleep(2500);
+            await waitForLoad();
             this.image.removeEventListener("load", listener);
             this.loadHiRes(dimensions);
         };
 
-        this.image.addEventListener("load", listener);
+
 
         if (this.image.complete === true || this.myElementIndex < loadDirect) {
-            this.loadHiRes(dimensions);
+           listener(); // Preview already loaded, call listener immediately
+        } else {
+          // Preview not loaded yet, wait for it (e.g. lazy loading)
+          this.image.addEventListener("load", listener);
         }
     }
 
+    public reload() {
+      let dimensions = MicxImageUrlDecoderV2.decode(this.path);
+      this.loadHiRes(dimensions)
+    }
+
     private async loadHiRes(dimensions : MicxImageUrlDecoderV2Result) {
-        await dom_ready();
+        await waitForDomContentLoaded();
 
         await sleep(40); // Settle image size
 
@@ -86,6 +114,8 @@ export class MicxCdnImgElement {
             }
             bestWidth = wnI;
         }
+
+        console.log("MicxCdnImgElement: Best fitting width for " + dimensions.filename + " is " + bestWidth + "px");
 
         let e2 = new MicxImageUrlEncoderV2(dimensions.id, dimensions.filename);
         e2.setReatio(dimensions.aspectRatio);

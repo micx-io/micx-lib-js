@@ -1,9 +1,9 @@
 export class MicxImageUrlDecoderV2Result {
-    id: string;
-    aspectRatio: string;
-    widths: string[]
-    filename: string
-    extensions: string[]
+  id: string;
+  aspectRatio: string;
+  widths: string[]
+  filename: string
+  extensions: string[]
 }
 
 export class MicxImageUrlDecoderV2 {
@@ -29,10 +29,25 @@ export class MicxImageUrlDecoderV2 {
         "g": "2560",
     };
 
-    constructor(private url: string) {}
+    // Robust pattern to detect encoded CDN v2 image URLs (relative or absolute)
+    private static readonly CDN_V2_REGEX: RegExp =
+        /(?:^|\/)v2\/[^\/]+\/[^\/]+_[^\/]+\/[^\/]+\.[a-z0-9_]+(?:$|[?#])/i;
 
-    decode(): MicxImageUrlDecoderV2Result {
-        const parts = this.url.split('/');
+    /**
+     * Prüft, ob die übergebene URL/Pfad eine encodete CDN v2 Image-URL ist.
+     * Unterstützt relative Pfade (z. B. "v2/...") und absolute URLs.
+     *
+     * Gültiges Format:
+     *   ".../v2/<id>/<aspect>_<widths>/<filename>.<ext[_ext2[_...]]>"
+     */
+    public static isCdnImage(url: string): boolean {
+        if (typeof url !== 'string' || url.length === 0) return false;
+        return MicxImageUrlDecoderV2.CDN_V2_REGEX.test(url);
+    }
+
+
+    public static decode(url : string): MicxImageUrlDecoderV2Result {
+        const parts = url.split('\/');
 
         if (parts.length < 4) throw new Error("Invalid url format");
 
@@ -43,7 +58,7 @@ export class MicxImageUrlDecoderV2 {
         encodedWidths = encodedWidths.replaceAll(/([a-zA-Z])/g, (w) => "-" + (MicxImageUrlDecoderV2.WIDTH_SHORTCUTS[w] ?? w) + "-");
         encodedAspect = encodedAspect.replaceAll(/([a-zA-Z])/g, (w) => MicxImageUrlDecoderV2.RATIO_SHORTCUTS[w] ?? w );
 
-        const aspect = encodedAspect.split('-').join('/')
+        const aspect = encodedAspect.split('-').join('\/')
         const widths = encodedWidths.split('-').filter(w => w.trim() !== "");
 
         return {

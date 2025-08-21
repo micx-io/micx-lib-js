@@ -3,7 +3,7 @@ import {MicxFormmailHelper} from "./MicxFormmailHelper";
 import {MicxFormmailStyleInterface} from "./MicxFormmailStyleInterface";
 import {MicxFormmailDefaultBootstrapStyle} from "./MicxFormmailDefaultBootstrapStyle";
 import {MicxFormmailerApi} from "./MicxFormmailerApi";
-import {Micx} from "../Micx";
+import {Micx} from "../../Micx";
 import {dom_ready} from "../helper/functions";
 
 

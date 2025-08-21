@@ -1,43 +1,43 @@
 {
-  "name": "@micx/lib-js",
-  "version": "1.0.29",
-  "description": "",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "directories": {
-    "doc": "docs",
-    "lib": "lib"
-  },
-  "files": [
-    "/dist"
-  ],
-  "scripts": {
-    "make.mjs": "tsc -d ",
-    "make.cjs": "tsc -m commonjs",
-    "build": "npm run make.mjs",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kasimirjs/kasi-editor.git"
-  },
-  "author": "Matthias Leuffen",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kasimirjs/kasi-editor/issues"
-  },
-  "homepage": "https://github.com/kasimirjs/kasi-editor#readme",
-  "dependencies": {
-
-  },
-  "devDependencies": {
-    "source-map-loader": "^4.0.1",
-    "ts-loader": "^9",
-    "ts-node": "^10",
-    "typescript": ">=4.0",
-    "webpack": "^5.88",
-    "webpack-cli": "^5",
-    "webpack-dev-server": "^4.15.1"
-  }
+    "name": "@micx/lib-js",
+    "version": "2.0.0",
+    "description": "",
+    "main": "./index.js",
+    "types": "./index.d.ts",
+    "type": "module",
+    "directories": {
+        "doc": "docs",
+        "lib": "lib"
+    },
+    "files": [
+        "/dist"
+    ],
+    "scripts": {
+        "make.mjs": "tsc -d ",
+        "make.cjs": "tsc -m commonjs",
+        "build": "npm run make.mjs",
+        "test": "vitest run"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/micx-io/micx-lib-js.git"
+    },
+    "author": "Matthias Leuffen",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/micx-io/micx-lib-js/issues"
+    },
+    "homepage": "https://github.com/micx-io/micx-lib-js#readme",
+    "dependencies": {
+        "@trunkjs/browser-utils": "^1.0.12"
+    },
+    "devDependencies": {
+        "jsdom": "~26.1.0",
+        "typescript": "~5.8.3",
+        "vite": "^6.3.5",
+        "vite-plugin-dts": "~4.5.4",
+        "vitest": "^3.2.0",
+        "vitest-browser-lit": "^0.1.0"
+    },
+    "web-types": "./web-types.json"
 }

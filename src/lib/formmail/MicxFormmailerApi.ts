@@ -1,4 +1,4 @@
-import {MicxlibRev} from "../index";
+import {MicxlibRev} from "../../index";
 
 
 export class MicxFormmailerApi {

@@ -1,0 +1,24 @@
+version: 1.0
+
+environments:
+  coder:
+    files:
+      - name: 'project files: cdn'
+        enabled: true
+        include:
+          - './src/components/micx-cdn-image-loader/**'
+          - './src/lib/mediastore/**'
+
+        instructions: |
+          These are all project files. You can edit them as you like.
+
+      - name: 'project files overall'
+        enabled: true
+        include:
+          - './package.json'
+          - './tsconfig.json'
+          - './vite.config.ts'
+          - './web-types.json'
+
+        instructions: |
+          These are all project files. You can edit them as you like.

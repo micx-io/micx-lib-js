@@ -1,0 +1,26 @@
+{
+    "name": "@micx/lib-js",
+    "version": "1.0.0",
+    "contributions": {
+        "html": {
+            "elements": [
+                {
+                    "name": "micx-cdn-image-loader",
+                    "description": "Load correct image sizes from CDN image link (sizes are encoded in the URL).",
+                    "attributes": [
+                        {
+                            "name": "debug",
+                            "type": "boolean",
+                            "description": "Enable debug mode (output debug information to the console)"
+                        },
+                        {
+                            "name": "adjust-sizes",
+                            "type": "string",
+                            "description": "Set size adjustments for different screen sizes. Format: '<min-screen-width>:<zoom-factor>;<min-screen-width>:<zoom-factor>;...'. Example: '600:2;900:1.5' means for screens wider than 600px use zoom factor 1.2, for screens wider than 900px use zoom factor 1.5."
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
