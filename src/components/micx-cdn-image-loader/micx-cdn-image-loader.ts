@@ -1,4 +1,4 @@
-import {Debouncer, LoggingMixin} from "@trunkjs/browser-utils";
+import {Debouncer, LoggingMixin, sleep, waitForDomContentLoaded, waitForLoad} from "@trunkjs/browser-utils";
 import {micxCdnImgElement, MicxCdnImgElement} from "../../lib/mediastore/MicxCdnImgElement";
 import {MicxImageUrlDecoderV2} from "../../lib/mediastore/MicxImageUrlDecoderV2";
 import {ImageSizeAdjustParser} from "../../lib/mediastore/ImageSizeAdjustParser";
@@ -20,20 +20,16 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
     await debounceResize.wait();
     this.log("Resize event detected, reprocessing images");
     this.querySelectorAll("img").forEach((img) => {
-      micxCdnImgElement(img)?.reload()
+      micxCdnImgElement(img, this.getLogger())?.reload()
     });
   }
 
 
-  connectedCallback() {
+  async connectedCallback() {
+    this.log("MicxCdnImageLoader connected to DOM");
     // Start observing when connected
+    //await waitForLoad();
     this.startObserving();
-
-    // If Tree was already rendered, process existing images
-    const imgs = this.querySelectorAll?.("img");
-    if (imgs && imgs.length) {
-      imgs.forEach((img : any) => queueMicrotask(() => this._enqueue(img)));
-    }
 
     window.addEventListener("resize", this.onResize);
   }
@@ -57,12 +53,19 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
     this._observer = new MutationObserver((records) => {
       for (const rec of records) {
         if (rec.type !== "childList" || rec.addedNodes.length === 0) continue;
-
+        //this.log("MutationObserver detected added node:", rec);
         for (let i = 0; i < rec.addedNodes.length; i++) {
           const node = rec.addedNodes[i];
           if (node.nodeType !== Node.ELEMENT_NODE) continue;
 
           const el = node as Element;
+
+          const images = Array.from(el.getElementsByTagName("img"));
+          if (images.length > 0) {
+            images.forEach((img) => this._enqueue(img));
+          }
+
+
 
           // Fast path: direct IMG
           if (el.tagName === "IMG") {
@@ -93,9 +96,10 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
    * Enqueue an <img> for batched processing.
    */
   private _enqueue(img: HTMLImageElement): void {
-    if (this._seen.has(img)) return;
+    if (this._seen.has(img)) {
+      return;
+    }
     this._seen.add(img);
-    this.log("Enqueuing image for processing", img);
     queueMicrotask(()=>this.onImageAdded(img));
   }
 
@@ -124,6 +128,7 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
    * Not implemented yet.
    */
   private onImageAdded(image: HTMLImageElement): void {
+    this.log("onImageAdded image:", image);
     if ( ! MicxImageUrlDecoderV2.isCdnImage(image.src || image.getAttribute("data-src"))) {
       this.log("Image is not a CDN image, skipping:", image);
       return; // Not a CDN image
@@ -143,7 +148,7 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
       image.setAttribute("data-src", image.src); // Store original src in data-src
     }
 
-    new MicxCdnImgElement(image, this._imageDefaultSizeAdjustment, this._debug);
+    new MicxCdnImgElement(image, this._imageDefaultSizeAdjustment, this.getLogger());
   }
 }
 

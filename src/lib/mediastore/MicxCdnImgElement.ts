@@ -1,7 +1,7 @@
 import {MicxImageUrlDecoderV2, MicxImageUrlDecoderV2Result} from "./MicxImageUrlDecoderV2";
 import {MicxImageUrlEncoderV2} from "./MicxImageUrlEncoderV2";
-import {dom_ready, sleep} from "../helper/functions";
-import {waitForDomContentLoaded, waitForLoad} from "@trunkjs/browser-utils";
+import {dom_ready, sleep, } from "../helper/functions";
+import {waitForDomContentLoaded, Logger, waitForLoad} from "@trunkjs/browser-utils";
 import {ImageSizeAdjustParser} from "./ImageSizeAdjustParser";
 
 
@@ -11,7 +11,7 @@ const loadDirect = 2;
 
 const cdnWeakMap = new WeakMap<HTMLImageElement, MicxCdnImgElement>();
 
-export function micxCdnImgElement(image: HTMLImageElement): MicxCdnImgElement | null {
+export function micxCdnImgElement(image: HTMLImageElement, logger: Logger): MicxCdnImgElement | null {
   if (cdnWeakMap.has(image)) {
     return cdnWeakMap.get(image) ?? null;
   }
@@ -19,7 +19,7 @@ export function micxCdnImgElement(image: HTMLImageElement): MicxCdnImgElement | 
   if (image.src.indexOf("/v2/") === -1)
     return null; // Not a CDN image
 
-  let e = new MicxCdnImgElement(image, parseInt(image.getAttribute("micx_cdn_idx")));
+  let e = new MicxCdnImgElement(image, parseInt(image.getAttribute("micx_cdn_idx")), logger);
   cdnWeakMap.set(image, e);
   return e;
 }
@@ -36,8 +36,8 @@ export class MicxCdnImgElement {
   private sizeAdjustment: number = 1;
   private debug: boolean = false;
 
-  public constructor(public readonly image: HTMLImageElement, sizeAdjustment: number, debug = false) {
-    this.debug = debug;
+  public constructor(public readonly image: HTMLImageElement, sizeAdjustment: number,  private logger: Logger) {
+
     let uri = image.src;
     this.origUri = uri;
     uri.replace(/^(.*?\/)(v2\/.*)$/, (p0, base, path) => {
@@ -50,7 +50,7 @@ export class MicxCdnImgElement {
       try {
         sizeAdjustment = (new ImageSizeAdjustParser(sizeAdjustAttr)).getSizeAdjustment();
       } catch (e) {
-        console.error(`Failed to parse attribute 'data-size-adjust="${sizeAdjustAttr}"' for image`, image, e);
+        logger.error(`Failed to parse attribute 'data-size-adjust="${sizeAdjustAttr}"' for image`, image, e);
       }
     }
     this.sizeAdjustment = sizeAdjustment;
@@ -63,7 +63,7 @@ export class MicxCdnImgElement {
     // wait for image to be fully loaded
 
 
-    image.classList.add("micx-image-loader");
+
 
     if (uri.endsWith(".svg")) {
       return; // SVG images come in the right size
@@ -76,18 +76,13 @@ export class MicxCdnImgElement {
     }
 
     let listener = async () => {
-      await waitForLoad();
-      this.image.removeEventListener("load", listener);
+      await this.image.decode().catch(() => {}); // safe even if already loaded
       this.loadHiRes(dimensions);
     };
 
 
-    if (this.image.complete === true) {
-      listener(); // Preview already loaded, call listener immediately
-    } else {
-      // Preview not loaded yet, wait for it (e.g. lazy loading)
-      this.image.addEventListener("load", listener);
-    }
+    listener();
+
   }
 
   public reload() {
@@ -96,9 +91,14 @@ export class MicxCdnImgElement {
   }
 
   private async loadHiRes(dimensions: MicxImageUrlDecoderV2Result) {
-    await waitForDomContentLoaded();
-
+    await waitForLoad();
+    await waitForLoad(this.image);
     await sleep(40); // Settle image size
+
+    if ( ! this.image.isConnected) {
+      return; // Image removed from DOM
+    }
+
 
     // detect actual dimensions of image element (Fallback innerWidth for Safari Garbage)
     let w = this.image.getBoundingClientRect().width;
@@ -121,9 +121,8 @@ export class MicxCdnImgElement {
       bestWidth = wnI;
     }
 
-    if (this.debug) {
-      console.log("MicxCdnImgElement: Best fitting width for " + dimensions.filename + " is " + bestWidth + "px (innerWidth=" + innerWidth + " px, sizeAdjustment=" + this.sizeAdjustment + ")");
-    }
+    this.logger.log("MicxCdnImgElement: Best fitting width for " + dimensions.filename + " is " + bestWidth + "px (innerWidth=" + innerWidth + " px, sizeAdjustment=" + this.sizeAdjustment + ")");
+
 
     let e2 = new MicxImageUrlEncoderV2(dimensions.id, dimensions.filename);
     e2.setReatio(dimensions.aspectRatio);
@@ -134,7 +133,8 @@ export class MicxCdnImgElement {
 
     this.image.style.backgroundSize = "cover";
     this.image.style.backgroundImage = "url(" + this.origUri + ")";
-    this.image.setAttribute("src", url);
+
+    this.image.setAttribute("src",  url);
 
     this.image.addEventListener("load", () => {
       this.image.style.backgroundImage = "none";
