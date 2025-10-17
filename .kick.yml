@@ -4,6 +4,8 @@ ports: "80:80;4000:4000;4100:4100;9229:9229"
 secrets: "open_ai"
 # packages: []
 
+
+
 command:
   build:
     - sudo chmod 777 -R /var/www/html

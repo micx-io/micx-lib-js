@@ -51,7 +51,7 @@ export class MicxFormmailDefaultBootstrapStyle implements MicxFormmailStyleInter
         form.querySelectorAll("input,textarea").forEach(e => e.setAttribute("readonly", "readonly"));
 
         let node = document.createElement("div");
-        let message = form.getAttribute("data-micx-formmail-sent-message") ?? "E-Mail sent successfully!";
+        let message = form.getAttribute("data-micx-formmail-sent-message") ?? "Sent successfully!";
         node.innerHTML = `<div class='alert alert-success'>${message}</div>`;
 
         form.querySelector("input[type='submit'],button[type='submit']").replaceWith(node);

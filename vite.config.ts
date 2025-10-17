@@ -18,7 +18,7 @@ export default defineConfig(() => ({
   cacheDir: `./node_modules/.vite/${dirName}`,
   plugins: [
     nxViteTsPaths(),
-    nxCopyAssetsPlugin(['*.md']),
+    nxCopyAssetsPlugin(['*.md', 'web-types.json']),
     dts({ entryRoot: 'src', tsconfigPath: path.join(__dirname, 'tsconfig.json') }),
   ],
   // Uncomment this if you are using workers.
