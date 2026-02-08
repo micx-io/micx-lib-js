@@ -16,7 +16,12 @@ export class MicxCdnImageObserver {
         if ( ! image.hasAttribute("micx_cdn_idx"))
             image.setAttribute("micx_cdn_idx", "" + cdnIdx++);
 
-        let e = new MicxCdnImgElement(image, parseInt(image.getAttribute("micx_cdn_idx")));
+        try {
+            let e = new MicxCdnImgElement(image, parseInt(image.getAttribute("micx_cdn_idx")));
+
+        } catch (error) {
+            console.warn("Error applying MicxCdnImgElement to image", image, error);
+        }
     }
 
 

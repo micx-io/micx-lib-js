@@ -2,8 +2,8 @@
   "name": "@micx/lib-js",
   "version": "1.0.29",
   "description": "",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
+  "main": "./dist/index",
+  "module": "./index",
   "types": "./dist/index.d.ts",
   "directories": {
     "doc": "docs",

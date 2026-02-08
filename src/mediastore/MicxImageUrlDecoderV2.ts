@@ -34,11 +34,15 @@ export class MicxImageUrlDecoderV2 {
     decode(): MicxImageUrlDecoderV2Result {
         const parts = this.url.split('/');
 
-        if (parts.length < 4) throw new Error("Invalid url format");
+        if (parts.length < 4) throw new Error("Invalid url format" + this.url);
 
         const id = parts[1];
         let [encodedAspect, encodedWidths] = parts[2].split("_");
         const [filename, extensions] = parts[3].split(".");
+
+        if (!encodedAspect || !encodedWidths || !filename || !extensions) {
+            throw new Error("Invalid url format: " + this.url);
+        }
 
         encodedWidths = encodedWidths.replaceAll(/([a-zA-Z])/g, (w) => "-" + (MicxImageUrlDecoderV2.WIDTH_SHORTCUTS[w] ?? w) + "-");
         encodedAspect = encodedAspect.replaceAll(/([a-zA-Z])/g, (w) => MicxImageUrlDecoderV2.RATIO_SHORTCUTS[w] ?? w );
