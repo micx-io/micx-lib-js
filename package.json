@@ -1,6 +1,6 @@
 {
   "name": "@micx/lib-js",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "description": "",
   "main": "./dist/index",
   "module": "./index",
@@ -18,16 +18,8 @@
     "build": "npm run make.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kasimirjs/kasi-editor.git"
-  },
   "author": "Matthias Leuffen",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kasimirjs/kasi-editor/issues"
-  },
-  "homepage": "https://github.com/kasimirjs/kasi-editor#readme",
   "dependencies": {
 
   },
@@ -36,8 +28,8 @@
     "ts-loader": "^9",
     "ts-node": "^10",
     "typescript": ">=4.0",
-    "webpack": "^5.88",
-    "webpack-cli": "^5",
-    "webpack-dev-server": "^4.15.1"
+    "webpack": "^5.105.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.3"
   }
 }
