@@ -1,20 +1,31 @@
 {
   "name": "@micx/lib-js",
-  "version": "1.0.39",
+  "version": "1.0.40",
   "description": "",
   "main": "./index",
   "module": "./index",
   "types": "./index.d.ts",
   "directories": {
     "doc": "docs",
-    "lib": "lib"
+    "src": "src",
+    "src.doc": "src.doc"
   },
   "files": [
-    "/dist"
+    "/dist",
+    "/src/**/*.js",
+    "/templates",
+    "/themes",
+    "/docs",
+    "/font",
+    "/elements",
+    "/sections",
+    "/_tpl",
+    "*.js",
+    "*.scss",
+    "*.json"
   ],
   "scripts": {
     "make.mjs": "tsc -d ",
-    "make.cjs": "tsc -m commonjs",
     "build": "npm run make.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
