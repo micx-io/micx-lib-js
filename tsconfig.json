@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
-    "outDir": "./",
-    "noImplicitAny": true,
+    "outDir": "./dist",
     "declaration": true,
-    "module": "es6",
-    "target": "es6",
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+
+    "module": "ESNext",
+    "target": "ES2018",
+
+    "noImplicitAny": true,
     "allowJs": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -14,12 +18,19 @@
       "es2021",
       "dom"
     ],
-
+    "skipLibCheck": true,
+    "types": [
+      "node"
+    ]
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "index.ts",
+    "vite.config.ts"
   ],
   "exclude": [
-    "./test"
+    "./test",
+    "dist",
+    "node_modules"
   ]
 }

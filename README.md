@@ -12,9 +12,15 @@ Setting the global Subscription Id:
     <script>
         window["micx_subscription_id"] = "Subscritpion Id";
     </script>
-
 ```
 
+### Development / Build
+
+Dieses Paket nutzt Vite (Library Mode).
+
+- Dev-Server (served `www/`): `npm run dev`
+- Build (ESM + UMD nach `dist/`): `npm run build`
+- Preview des Builds: `npm run preview`
 
 ## FormMailer
 
