@@ -11,8 +11,3 @@ export * from './formmail/MicxFormmailDefaultBootstrapStyle';
 
 export * from './mediastore/MicxCdnImageObserver';
 
-
-
-
-let o = new MicxCdnImageObserver();
-o.observe();
