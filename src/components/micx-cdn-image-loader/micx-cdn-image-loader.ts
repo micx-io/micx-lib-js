@@ -159,6 +159,7 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
       image.setAttribute("data-src", image.src); // Store original src in data-src
     }
 
+    this.log("new CDN image:", image, "with default size adjustment:", this._imageDefaultSizeAdjustment);
     new MicxCdnImgElement(image, this._imageDefaultSizeAdjustment, this.getLogger());
   }
 }
