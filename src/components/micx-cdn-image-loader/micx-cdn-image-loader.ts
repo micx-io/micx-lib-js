@@ -28,7 +28,6 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
   async connectedCallback() {
     this.log("MicxCdnImageLoader connected to DOM");
     // Start observing when connected
-    //await waitForLoad();
     this.startObserving();
 
     window.addEventListener("resize", this.onResize);
@@ -127,9 +126,9 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
    * Called whenever an <img> element is discovered within this component.
    * Not implemented yet.
    */
-  private onImageAdded(image: HTMLImageElement): void {
+   private async onImageAdded(image: HTMLImageElement): void {
     this.log("onImageAdded image:", image);
-    if ( ! MicxImageUrlDecoderV2.isCdnImage(image.src || image.getAttribute("data-src"))) {
+    if ( ! MicxImageUrlDecoderV2.isCdnImage(image.src || image.getAttribute("data-src")) || "") {
       this.log("Image is not a CDN image, skipping:", image);
       return; // Not a CDN image
     }
@@ -148,6 +147,7 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
       image.setAttribute("data-src", image.src); // Store original src in data-src
     }
 
+    await waitForLoad();
     new MicxCdnImgElement(image, this._imageDefaultSizeAdjustment, this.getLogger());
   }
 }
