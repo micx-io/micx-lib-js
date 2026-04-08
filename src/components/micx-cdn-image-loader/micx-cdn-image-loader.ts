@@ -148,6 +148,7 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
     }
 
     await waitForLoad();
+    await sleep(500);
     new MicxCdnImgElement(image, this._imageDefaultSizeAdjustment, this.getLogger());
   }
 }
