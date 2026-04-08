@@ -27,6 +27,7 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
 
   async connectedCallback() {
     this.log("MicxCdnImageLoader connected to DOM");
+    await waitForDomContentLoaded();
     // Start observing when connected
     this.startObserving();
 
