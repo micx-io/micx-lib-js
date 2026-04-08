@@ -147,8 +147,6 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
       image.setAttribute("data-src", image.src); // Store original src in data-src
     }
 
-    await waitForLoad();
-    await sleep(500);
     new MicxCdnImgElement(image, this._imageDefaultSizeAdjustment, this.getLogger());
   }
 }

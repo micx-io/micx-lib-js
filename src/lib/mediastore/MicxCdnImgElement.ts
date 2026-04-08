@@ -99,11 +99,12 @@ export class MicxCdnImgElement {
       return; // Image removed from DOM
     }
 
-
+    let w = null;
+    let windowWidth =  window.innerWidth || document.documentElement.clientWidth;
     // detect actual dimensions of image element (Fallback innerWidth for Safari Garbage)
-    let w = this.image.getBoundingClientRect().width;
+    let wbcr = w = this.image.getBoundingClientRect().width;
     if (w === 0 || w === null)
-      w = window.innerWidth || document.documentElement.clientWidth;
+      w = windowWidth;
 
     // Apply size adjustment
     w = Math.round(w * this.sizeAdjustment);
@@ -121,7 +122,7 @@ export class MicxCdnImgElement {
       bestWidth = wnI;
     }
 
-    this.logger.log("MicxCdnImgElement: Best fitting width for " + dimensions.filename + " is " + bestWidth + "px (innerWidth=" + innerWidth + " px, sizeAdjustment=" + this.sizeAdjustment + ")");
+    this.logger.log("MicxCdnImgElement: Best fitting width for " + dimensions.filename + " is " + bestWidth + "px (clientBoundingRect = " + wbcr + " windowWidth=" + windowWidth + " px, sizeAdjustment=" + this.sizeAdjustment + ")");
 
 
     let e2 = new MicxImageUrlEncoderV2(dimensions.id, dimensions.filename);
