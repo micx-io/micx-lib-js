@@ -28,6 +28,8 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
   async connectedCallback() {
     this.log("MicxCdnImageLoader connected to DOM");
     await waitForDomContentLoaded();
+    this.updateDefaultSizeAdjustment();
+
     // Start observing when connected
     this.startObserving();
 
@@ -104,21 +106,30 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
   }
 
 
+  private updateDefaultSizeAdjustment(): void {
+    let attrSizeAdjust = this.getAttribute("default-size-adjust");
+    if (! attrSizeAdjust) {
+      this._imageDefaultSizeAdjustment = 1; // default
+      return;
+    }
+
+    try {
+      this._imageDefaultSizeAdjustment = (new ImageSizeAdjustParser(attrSizeAdjust)).getSizeAdjustment();
+    } catch (e) {
+      this.error("Failed to parse default-size-adjust=", attrSizeAdjust , e);
+      this._imageDefaultSizeAdjustment = 1; // Fallback to default size adjustment
+    }
+
+  }
+
+
   attributeChangedCallback(name : string, oldValue: any, newVal: any): void {
     // This method is called when properties change,
     // but we don't need to handle any properties for now.
     // If needed, we can implement logic here to handle specific property changes.
     this.log("Properties changed:", name);
     if (name === "default-size-adjust") {
-      const sizeParser = new ImageSizeAdjustParser();
-      try {
-        this._imageDefaultSizeAdjustment = (new ImageSizeAdjustParser(newVal)).getSizeAdjustment();
-
-      } catch (e) {
-        this.error("Failed to parse default-size-adjust=", newVal , e);
-        this._imageDefaultSizeAdjustment = 1; // Fallback to default size adjustment
-      }
-      this.log("Default size adjustment updated to:", this._imageDefaultSizeAdjustment);
+      this.updateDefaultSizeAdjustment();
     }
   }
 
