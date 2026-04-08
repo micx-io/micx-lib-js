@@ -26,6 +26,11 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
     this._windowWidth = window.innerWidth;
     this.log("Resize event detected, reprocessing images");
     this.querySelectorAll("img").forEach((img) => {
+      let src = img.getAttribute("data-src") || img.src || "";
+      if ( ! MicxImageUrlDecoderV2.isCdnImage(src) {
+        this.log("Image is not a CDN image, skipping:", img);
+        return; // Not a CDN image
+      }
       (new MicxCdnImgElement(img, this._imageDefaultSizeAdjustment, this.getLogger()));
     });
   }
