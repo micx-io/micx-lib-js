@@ -1,5 +1,4 @@
 import {Debouncer, LoggingMixin, sleep, waitForDomContentLoaded, waitForLoad} from "@trunkjs/browser-utils";
-import {micxCdnImgElement, MicxCdnImgElement} from "../../lib/mediastore/MicxCdnImgElement";
 import {MicxImageUrlDecoderV2} from "../../lib/mediastore/MicxImageUrlDecoderV2";
 import {ImageSizeAdjustParser} from "../../lib/mediastore/ImageSizeAdjustParser";
 
@@ -16,11 +15,17 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
 
   private _imageDefaultSizeAdjustment = 1;
 
+  private _windowWidth = window.innerWidth;
+
   private onResize = async ()=> {
     await debounceResize.wait();
+    if (this._windowWidth === window.innerWidth) {
+      return;
+    }
+    this._windowWidth = window.innerWidth;
     this.log("Resize event detected, reprocessing images");
     this.querySelectorAll("img").forEach((img) => {
-      micxCdnImgElement(img, this.getLogger())?.reload()
+      (new MicxCdnImgElement(img, this._imageDefaultSizeAdjustment, this.getLogger()));
     });
   }
 

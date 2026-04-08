@@ -11,18 +11,6 @@ const loadDirect = 2;
 
 const cdnWeakMap = new WeakMap<HTMLImageElement, MicxCdnImgElement>();
 
-export function micxCdnImgElement(image: HTMLImageElement, logger: Logger): MicxCdnImgElement | null {
-  if (cdnWeakMap.has(image)) {
-    return cdnWeakMap.get(image) ?? null;
-  }
-
-  if (image.src.indexOf("/v2/") === -1)
-    return null; // Not a CDN image
-
-  let e = new MicxCdnImgElement(image, parseInt(image.getAttribute("micx_cdn_idx")), logger);
-  cdnWeakMap.set(image, e);
-  return e;
-}
 
 
 export class MicxCdnImgElement {
