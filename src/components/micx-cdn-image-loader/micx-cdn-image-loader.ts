@@ -149,7 +149,7 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
    * Called whenever an <img> element is discovered within this component.
    * Not implemented yet.
    */
-   private async onImageAdded(image: HTMLImageElement): void {
+   private onImageAdded(image: HTMLImageElement) {
     this.log("onImageAdded image:", image);
     if ( ! MicxImageUrlDecoderV2.isCdnImage(image.src || image.getAttribute("data-src")) || "") {
       this.log("Image is not a CDN image, skipping:", image);
