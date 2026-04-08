@@ -26,7 +26,7 @@ export class MicxCdnImgElement {
 
   public constructor(public readonly image: HTMLImageElement, sizeAdjustment: number,  private logger: Logger) {
 
-    let uri = image.src;
+    let uri = image.getAttribute("data-src") || image.getAttribute("src");
     this.origUri = uri;
     uri.replace(/^(.*?\/)(v2\/.*)$/, (p0, base, path) => {
       this.base = base;
