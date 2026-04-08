@@ -1,6 +1,7 @@
 import {Debouncer, LoggingMixin, sleep, waitForDomContentLoaded, waitForLoad} from "@trunkjs/browser-utils";
 import {MicxImageUrlDecoderV2} from "../../lib/mediastore/MicxImageUrlDecoderV2";
 import {ImageSizeAdjustParser} from "../../lib/mediastore/ImageSizeAdjustParser";
+import {MicxCdnImgElement} from "../../lib/mediastore/MicxCdnImgElement";
 
 
 const debounceResize = new Debouncer(500, 1000);
