@@ -23,10 +23,10 @@
         "@trunkjs/browser-utils": "^1.0.12"
     },
     "devDependencies": {
-        "@types/node": "^25.6.0",
-        "jsdom": "~26.1.0",
+        "@types/jsdom": "^21.1.7",
+        "jsdom": "^26.0.0",
         "typescript": "^5.8.3",
-        "vite": "^6.3.5",
+        "vite": "^8.0.8",
         "vite-plugin-dts": "^4.5.4",
         "vitest": "^3.2.0"
     },

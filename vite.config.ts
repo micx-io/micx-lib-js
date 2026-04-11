@@ -1,9 +1,9 @@
 /// <reference types='vitest' />
-import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-import  path from 'path';
+
+import * as path from 'node:path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+import tsconfigPaths from "vite-tsconfig-paths";
 
 const projectName = 'project';
 const dirName = `build`;
@@ -17,8 +17,6 @@ export default defineConfig(() => ({
   root: __dirname,
   cacheDir: `./node_modules/.vite/${dirName}`,
   plugins: [
-    nxViteTsPaths(),
-    nxCopyAssetsPlugin(['*.md', 'web-types.json']),
     dts({ entryRoot: 'src', tsconfigPath: path.join(__dirname, 'tsconfig.json') }),
   ],
   // Uncomment this if you are using workers.
