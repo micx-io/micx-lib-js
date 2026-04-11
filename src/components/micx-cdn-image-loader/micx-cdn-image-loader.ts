@@ -37,7 +37,7 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
 
 
   async connectedCallback() {
-    this.log("MicxCdnImageLoader connected to DOM");
+    this.debug("MicxCdnImageLoader connected to DOM");
     await waitForDomContentLoaded();
     this.updateDefaultSizeAdjustment();
 
@@ -150,9 +150,9 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
    * Not implemented yet.
    */
    private onImageAdded(image: HTMLImageElement) {
-    this.log("onImageAdded image:", image);
+    this.debug("onImageAdded image:", image);
     if ( ! MicxImageUrlDecoderV2.isCdnImage(image.src || image.getAttribute("data-src")) || "") {
-      this.log("Image is not a CDN image, skipping:", image);
+      this.debug("Image is not a CDN image, skipping:", image);
       return; // Not a CDN image
     }
 
