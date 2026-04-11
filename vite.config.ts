@@ -17,6 +17,7 @@ export default defineConfig(() => ({
   root: __dirname,
   cacheDir: `./node_modules/.vite/${dirName}`,
   plugins: [
+    tsconfigPaths(),
     dts({ entryRoot: 'src', tsconfigPath: path.join(__dirname, 'tsconfig.json') }),
   ],
   // Uncomment this if you are using workers.
