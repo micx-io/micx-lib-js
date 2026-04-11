@@ -28,7 +28,7 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
     this.querySelectorAll("img").forEach((img) => {
       let src = img.getAttribute("data-src") || img.src || "";
       if ( ! MicxImageUrlDecoderV2.isCdnImage(src)) {
-        this.log("Image is not a CDN image, skipping:", img);
+        this.debug("Image is not a CDN image, skipping:", img);
         return; // Not a CDN image
       }
       (new MicxCdnImgElement(img, this._imageDefaultSizeAdjustment, this.getLogger()));
@@ -138,7 +138,7 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
     // This method is called when properties change,
     // but we don't need to handle any properties for now.
     // If needed, we can implement logic here to handle specific property changes.
-    this.log("Properties changed:", name);
+    this.debug("Properties changed:", name);
     if (name === "default-size-adjust") {
       this.updateDefaultSizeAdjustment();
     }
@@ -170,7 +170,7 @@ export class MicxCdnImageLoader extends LoggingMixin(HTMLElement) {
       image.setAttribute("data-src", image.src); // Store original src in data-src
     }
 
-    this.log("new CDN image:", image, "with default size adjustment:", this._imageDefaultSizeAdjustment);
+    this.debug("new CDN image:", image, "with default size adjustment:", this._imageDefaultSizeAdjustment);
     new MicxCdnImgElement(image, this._imageDefaultSizeAdjustment, this.getLogger());
   }
 }
