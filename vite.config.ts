@@ -4,6 +4,7 @@ import * as path from 'node:path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import tsconfigPaths from "vite-tsconfig-paths";
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 const projectName = 'project';
 const dirName = `build`;
@@ -18,6 +19,14 @@ export default defineConfig(() => ({
   cacheDir: `./node_modules/.vite/${dirName}`,
   plugins: [
     tsconfigPaths(),
+    viteStaticCopy({
+      targets: [
+        {
+          src: path.resolve(__dirname, 'package.json'),
+          dest: './' // copies into dist root
+        }
+      ]
+    }),
     dts({ entryRoot: 'src', tsconfigPath: path.join(__dirname, 'tsconfig.json') }),
   ],
   // Uncomment this if you are using workers.
