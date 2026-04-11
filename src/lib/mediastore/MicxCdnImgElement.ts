@@ -27,7 +27,7 @@ export class MicxCdnImgElement {
   public constructor(public readonly image: HTMLImageElement, sizeAdjustment: number,  private logger: Logger) {
 
     let uri = image.getAttribute("data-src") || image.getAttribute("src");
-    logger.log("Constructor image with URI: " + uri, image);
+    logger.debug("Constructor image with URI: " + uri, image);
     this.origUri = uri;
     uri.replace(/^(.*?\/)(v2\/.*)$/, (p0, base, path) => {
       this.base = base;
@@ -111,7 +111,7 @@ export class MicxCdnImgElement {
       bestWidth = wnI;
     }
 
-    this.logger.log("MicxCdnImgElement: Best fitting width for " + dimensions.filename + " is " + bestWidth + "px (clientBoundingRect = " + wbcr + " windowWidth=" + windowWidth + " px, sizeAdjustment=" + this.sizeAdjustment + ")");
+    this.logger.debug("MicxCdnImgElement: Best fitting width for " + dimensions.filename + " is " + bestWidth + "px (clientBoundingRect = " + wbcr + " windowWidth=" + windowWidth + " px, sizeAdjustment=" + this.sizeAdjustment + ")");
 
 
     let e2 = new MicxImageUrlEncoderV2(dimensions.id, dimensions.filename);
